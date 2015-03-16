@@ -81,13 +81,11 @@ class Eventbrite
         $this->parseOptions($options);
 
         $params = array_merge($params, $this->apiKeys);
+        $url = sprintf(self::API_ENDPOINT, $this->scheme, $this->outputFormat, $method .'?'. http_build_query($params));
 
-        $response = $this->httpAdapter->getContent(
-            sprintf(self::API_ENDPOINT, $this->scheme, $this->outputFormat, $method .'?'. http_build_query($params)),
-            $this->headers
-        );
+        $response = $this->httpAdapter->getContent($url,$this->headers);
 
-        return $this->responseHandler($response);
+        return ['url'=>$url, 'response'=>$this->responseHandler($response)];
     }
 
     /**
